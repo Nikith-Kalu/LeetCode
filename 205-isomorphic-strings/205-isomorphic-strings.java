@@ -1,23 +1,27 @@
 class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        if (s == null || t == null) return false;
-        if (s.length() != t.length()) return false;
-        
-        Map<Character, Integer> mapS = new HashMap<Character, Integer>();
-        Map<Character, Integer> mapT = new HashMap<Character, Integer>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            int indexS = mapS.getOrDefault(s.charAt(i), -1);
-            int indexT = mapT.getOrDefault(t.charAt(i), -1);
-                        
-            if (indexS != indexT) {
-                return false;
+    public boolean isIsomorphic(String sString, String tString) {
+
+        char[] s = sString.toCharArray();
+        char[] t = tString.toCharArray();
+
+        int length = s.length;
+        if(length != t.length) return false;
+
+        char[] sm = new char[256];
+        char[] tm = new char[256];
+
+        for(int i=0; i<length; i++){
+            char sc = s[i];
+            char tc = t[i];
+            if(sm[sc] == 0 && tm[tc] == 0){
+                sm[sc] = tc;
+                tm[tc] = sc;
+            }else{
+                if(sm[sc] != tc || tm[tc] != sc){
+                    return false;
+                }
             }
-            
-            mapS.put(s.charAt(i), i);
-            mapT.put(t.charAt(i), i);
         }
-        
         return true;
     }
 }
