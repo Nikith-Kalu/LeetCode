@@ -11,8 +11,6 @@
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        // Action plan: 
-        // find if the cycle exists using tortoise and hare method (slow and fast pointers)
         ListNode slow = head, fast = head;
         while(fast != null && fast.next != null) {
             slow = slow.next;
