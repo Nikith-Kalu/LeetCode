@@ -1,16 +1,19 @@
 public class Solution extends VersionControl {
     public int firstBadVersion(int n) {
-        if (n == 1) return 1;
-        return firstBad(0, n);
+        return firstBadVersion(0, n);
     }
     
-    public int firstBad(int leftGood, int rightBad) {
-        if (leftGood + 1 == rightBad) return rightBad;
-        int guess = ((rightBad - leftGood) / 2) + leftGood;
-        if (isBadVersion(guess)) {
-            return firstBad(leftGood, guess);
-        } else {
-            return firstBad(guess, rightBad);
-        }   
+    private int firstBadVersion(int l, int r) {
+        if (l == r) {
+            return l;
+        }
+        int mid = l + (r - l) / 2;
+        if (isBadVersion(mid)) {
+            r = mid;
+        }
+        else {
+            l = mid + 1;
+        }
+        return firstBadVersion(l, r);
     }
 }
