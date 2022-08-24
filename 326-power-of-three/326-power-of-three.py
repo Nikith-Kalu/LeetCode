@@ -1,4 +1,13 @@
 class Solution(object):
     def isPowerOfThree(self, n):
-        return (n > 0) and (3486784401 % n == 0)
+        if n < 1:
+            return False
+        elif n == 1:
+            return True
+        val = 1
+        while val < n:
+            val *= 3
+            if val == n:
+                return True
+        return False
         
