@@ -1,69 +1,37 @@
-class Solution:
-    def pacificAtlantic(self, ht: List[List[int]]) -> List[List[int]]:
+class Solution(object):
+    def pacificAtlantic(self, matrix):
+        if not matrix: return []
+        self.directions = [(1,0),(-1,0),(0,1),(0,-1)]
+        m = len(matrix)
+        n = len(matrix[0])
+        p_visited = [[False for _ in range(n)] for _ in range(m)]
         
-        def pac(i,j):
-            if rp[i][j]:
-                return True
-            k=False
-            h=ht[i][j]
-            ht[i][j]=100001
-            if ht[i-1][j]<=h:
-                k=k or pac(i-1,j)
-                
-            if ht[i][j-1]<=h:
-                k=k or pac(i,j-1)
-                
-            if i<m-1 and ht[i+1][j]<=h:
-                k=k or pac(i+1,j)
-                
-            if j<n-1 and ht[i][j+1]<=h:
-                k=k or pac(i,j+1)
-                
-            ht[i][j]=h
-            rp[i][j]=k
-            return k
-        
-        def ant(i,j):
-            if ra[i][j]:
-                return True
-            k=False
-            h=ht[i][j]
-            ht[i][j]=100001
-            if i>0 and ht[i-1][j]<=h:
-                k=k or ant(i-1,j)
-                
-            if j>0 and ht[i][j-1]<=h:
-                k=k or ant(i,j-1)
-                
-            if ht[i+1][j]<=h:
-                k=k or ant(i+1,j)
-                
-            if ht[i][j+1]<=h:
-                k=k or ant(i,j+1)
-                
-            ht[i][j]=h
-            ra[i][j]=k
-            return k
-        
-        m=len(ht)
-        n=len(ht[0])
-        rp=[[False for i in range(n)] for j in range(m)]
-        ra=[[False for i in range(n)] for j in range(m)]
+        a_visited = [[False for _ in range(n)] for _ in range(m)]
+        result = []
         
         for i in range(m):
-            rp[i][0]=True
-            ra[i][-1]=True
-        for i in range(n):
-            rp[0][i]=True
-            ra[-1][i]=True
-        
+            # p_visited[i][0] = True
+            # a_visited[i][n-1] = True
+            self.dfs(matrix, i, 0, p_visited, m, n)
+            self.dfs(matrix, i, n-1, a_visited, m, n)
+        for j in range(n):
+            # p_visited[0][j] = True
+            # a_visited[m-1][j] = True
+            self.dfs(matrix, 0, j, p_visited, m, n)
+            self.dfs(matrix, m-1, j, a_visited, m, n)
+            
         for i in range(m):
             for j in range(n):
-                pac(i,j)
-                ant(i,j)
-        res=[]
-        for i in range(m):
-            for j in range(n):
-                if rp[i][j] and ra[i][j]:
-                    res.append([i,j])
-        return res
+                if p_visited[i][j] and a_visited[i][j]:
+                    result.append([i,j])
+        return result
+                
+                
+    def dfs(self, matrix, i, j, visited, m, n):
+        # when dfs called, meaning its caller already verified this point 
+        visited[i][j] = True
+        for dir in self.directions:
+            x, y = i + dir[0], j + dir[1]
+            if x < 0 or x >= m or y < 0 or y >= n or visited[x][y] or matrix[x][y] < matrix[i][j]:
+                continue
+            self.dfs(matrix, x, y, visited, m, n)
