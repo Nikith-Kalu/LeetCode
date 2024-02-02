@@ -1,27 +1,18 @@
-/**
- * @param {number} low
- * @param {number} high
- * @return {number[]}
- */
-var sequentialDigits = function(low, high) {
+function sequentialDigits(low, high) {
     const result = [];
-    const queue = [];
-    for (let i = 1; i <= 9; i++) {
-        queue.push(i);
-    }
+    const minLen = low.toString().length;
+    const maxLen = high.toString().length;
 
-    while (queue.length > 0) {
-        const num = queue.shift();
-        if (num <= high && num >= low) {
-            result.push(num);
-        }
+    for (let length = minLen; length <= maxLen; length++) {
+        for (let start = 1; start <= 10 - length; start++) {
+            let num = 0;
+            for (let i = 0; i < length; i++) {
+                num = num * 10 + (start + i);
+            }
 
-        if (num > high) break;
-
-        let lastDigit = num % 10;
-        if (lastDigit < 9) {
-            const nextNum = num * 10 + (lastDigit + 1);
-            queue.push(nextNum);
+            if (num >= low && num <= high) {
+                result.push(num);
+            }
         }
     }
 
