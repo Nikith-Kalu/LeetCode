@@ -12,7 +12,6 @@ class Solution {
         for (Map.Entry<Integer, List<int[]>> entry : timelineToMeetings.entrySet()) {
             List<int[]> timelineMeetings = entry.getValue();
 
-            // Contruct graph
             Map<Integer, List<Integer>> graph = new HashMap<>();
             for (int[] meeting : timelineMeetings) {
                 int person1 = meeting[0];
